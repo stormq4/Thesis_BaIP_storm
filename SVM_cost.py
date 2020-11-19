@@ -32,7 +32,7 @@ def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
     return dw
 
 def sgd(features, outputs, reg_strength, learning_rate):
-    max_epochs = 5000
+    max_epochs = 10000
     #cost_list = []
 
     weights = np.zeros(features.shape[1])

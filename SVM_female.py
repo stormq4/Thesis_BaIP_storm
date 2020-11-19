@@ -46,8 +46,8 @@ def init_f(file, j):
     return W, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
-reg_strength = 100 # regularization strength
-learning_rate = 0.00000001
+reg_strength = 100 # regularization strength 100
+learning_rate = 0.00000001 #0.00000001
 cost_reduction = 5100
 
 if __name__ == '__main__':

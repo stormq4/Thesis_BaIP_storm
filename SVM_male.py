@@ -46,9 +46,9 @@ def init_m(file, j):
     return W, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
-reg_strength = 500 # regularization strength
-learning_rate = 0.00000005
+reg_strength = 170 # regularization strength 170
+learning_rate = 0.0000001 #0.0000001
 cost_reduction = 5100
 
 if __name__ == '__main__':
-    init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_8.csv", 1)
+    init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_9.csv", 1)
