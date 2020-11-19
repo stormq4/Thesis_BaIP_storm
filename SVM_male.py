@@ -4,7 +4,7 @@ import numpy as np
 from SVM_cost import sgd
 
 
-def init_f(file, j):
+def init_m(file, j):
     data = pd.read_csv(file)
     data['CVD'].replace({0.0: -1.0}, inplace=True)
     #data.drop(data.columns[[-1, 0]], axis=1, inplace=True)
@@ -38,17 +38,17 @@ def init_f(file, j):
 
 
     node_cost_reduction = cost_reduction * count_CVD_correct
-    #print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
-    #print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
+    print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
+    print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
     #print("precision on test dataset: {}".format(precision_score(y_test.to_numpy(), y_test_predicted)))
     #print("cost reduction of node %s: " %j, "{}" .format(node_cost_reduction), " euros per QALY\n")
 
     return W, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
-reg_strength = 100 # regularization strength
-learning_rate = 0.00000001
+reg_strength = 500 # regularization strength
+learning_rate = 0.00000005
 cost_reduction = 5100
 
 if __name__ == '__main__':
-    init_f(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_8.csv", 1)
+    init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_8.csv", 1)

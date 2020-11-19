@@ -1,9 +1,9 @@
 import networkx as nx
 from network_SVM import create_network
-
+from SVM_female import init_f
 import pandas as pd
 import numpy as np
-from SVM import init_m, init_f
+from SVM_male import init_m
 
 def reader_writer1(file, begin, end, node_file): #, begin, end): #reads file and
     data = pd.read_csv(file, delimiter=";", sep="\n", dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,
@@ -74,6 +74,7 @@ results_f.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/resu
 
 X_node_male = pd.DataFrame(X_i_male)
 X_node_male.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_male.csv')
+#X_node_male.to_excel(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_male.xlsx', index=None, header=True)
 
 X_node_female = pd.DataFrame(X_i_male)
 X_node_male.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_female.csv')
