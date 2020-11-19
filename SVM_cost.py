@@ -54,7 +54,7 @@ def sgd(features, outputs, reg_strength, learning_rate):
             cost = compute_cost(weights, features, outputs, reg_strength)
             #cost_list[nth] = cost
 
-            print("Epoch is:{} and Cost is: {}".format(epoch, cost))
+            #print("Epoch is:{} and Cost is: {}".format(epoch, cost))
             # stoppage criterion
             if abs(prev_cost - cost) < cost_threshold * prev_cost:
                 return weights
