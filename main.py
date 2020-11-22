@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 from SVM_male import init_m
 
+#inseert cost
+
 def reader_writer1(file, begin, end, node_file): #, begin, end): #reads file and
     data = pd.read_csv(file, delimiter=";", sep="\n", dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,
                                                              'di_bp': np.float64, 'chol': np.float64})
@@ -27,10 +29,11 @@ def results_df(i, Acc, CR):
     }
     return name
 
-def X_i(Xi_m, i):
+def X_i(Xi, i, cost):
     name = {
         'Node': i,
-        'X_i*': Xi_m
+        'X_i*': Xi,
+        'Cost': cost
     }
     return name
 n = 20
@@ -41,7 +44,7 @@ g = create_network(n, p)
 res_data_m = []
 res_data_f = []
 
-#X_i*
+#X_i* and cost
 X_i_male = []
 X_i_female = []
 
@@ -56,14 +59,14 @@ for i in g.nodes:
     attrs = {i: {"male": male, "female": female}}
     nx.set_node_attributes(g, attrs)
 
-    X_im, Accm, CRM = init_m(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv' %i, i)
-    X_if, Accf, CRF = init_f(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv' %i, i)
+    X_im, cost_m, Accm, CRM = init_m(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv' %i, i)
+    X_if, cost_f, Accf, CRF = init_f(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv' %i, i)
 
     res_data_m.append(results_df(i, Accm, CRM))
     res_data_f.append(results_df(i, Accf, CRF))
 
-    X_i_male.append(X_i(X_im, i))
-    X_i_female.append(X_i(X_im, i))
+    X_i_male.append(X_i(X_im, i, cost_m))
+    X_i_female.append(X_i(X_if, i, cost_f))
 
 results_m = pd.DataFrame(res_data_m)
 results_m.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/results_male_Acc_CR.csv')
@@ -76,5 +79,5 @@ X_node_male = pd.DataFrame(X_i_male)
 X_node_male.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_male.csv')
 #X_node_male.to_excel(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_male.xlsx', index=None, header=True)
 
-X_node_female = pd.DataFrame(X_i_male)
-X_node_male.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_female.csv')
+X_node_female = pd.DataFrame(X_i_female)
+X_node_female.to_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_female.csv')

@@ -20,8 +20,7 @@ def init_f(file, j):
     y_train = Y[0:200]
     y_test = Y[200:400]
 
-    W = sgd(X_train.to_numpy(), y_train.to_numpy(), reg_strength, learning_rate)
-
+    W, cost = sgd(X_train.to_numpy(), y_train.to_numpy(), reg_strength, learning_rate)
 
     y_test_predicted = np.array([])
     count_CVD_correct = 0
@@ -38,16 +37,16 @@ def init_f(file, j):
 
 
     node_cost_reduction = cost_reduction * count_CVD_correct
-    #print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
-    #print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
+    print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
+    print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
     #print("precision on test dataset: {}".format(precision_score(y_test.to_numpy(), y_test_predicted)))
     #print("cost reduction of node %s: " %j, "{}" .format(node_cost_reduction), " euros per QALY\n")
 
-    return W, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
+    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
-reg_strength = 100 # regularization strength 100
-learning_rate = 0.00000001 #0.00000001
+reg_strength = 150 # regularization strength 100
+learning_rate = 0.0000001 #0.00000001
 cost_reduction = 5100
 
 if __name__ == '__main__':

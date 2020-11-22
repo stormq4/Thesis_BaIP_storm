@@ -32,7 +32,7 @@ def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
     return dw
 
 def sgd(features, outputs, reg_strength, learning_rate):
-    max_epochs = 100 #change this value
+    max_epochs = 1000 #change this value
     #cost_list = []
 
     weights = np.zeros(features.shape[1])
@@ -54,10 +54,10 @@ def sgd(features, outputs, reg_strength, learning_rate):
             cost = compute_cost(weights, features, outputs, reg_strength)
             #cost_list[nth] = cost
 
-            #print("Epoch is:{} and Cost is: {}".format(epoch, cost))
+            print("Epoch is:{} and Cost is: {}".format(epoch, cost))
             # stoppage criterion
             if abs(prev_cost - cost) < cost_threshold * prev_cost:
-                return weights
+                return weights, cost
             #if nth != 0 and cost_list[nth] > cost_list[nth-1]:
                 #return weights
 
@@ -65,4 +65,4 @@ def sgd(features, outputs, reg_strength, learning_rate):
             nth += 1
 
 
-    return weights
+    return weights, cost

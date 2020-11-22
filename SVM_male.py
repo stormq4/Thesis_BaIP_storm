@@ -20,7 +20,7 @@ def init_m(file, j):
     y_train = Y[0:200]
     y_test = Y[200:400]
 
-    W = sgd(X_train.to_numpy(), y_train.to_numpy(), reg_strength, learning_rate)
+    W, cost = sgd(X_train.to_numpy(), y_train.to_numpy(), reg_strength, learning_rate)
 
 
     y_test_predicted = np.array([])
@@ -43,7 +43,7 @@ def init_m(file, j):
     #print("precision on test dataset: {}".format(precision_score(y_test.to_numpy(), y_test_predicted)))
     #print("cost reduction of node %s: " %j, "{}" .format(node_cost_reduction), " euros per QALY\n")
 
-    return W, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
+    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
 reg_strength = 170 # regularization strength 170
@@ -51,4 +51,5 @@ learning_rate = 0.0000001 #0.0000001
 cost_reduction = 5100
 
 if __name__ == '__main__':
-    init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_9.csv", 1)
+    w, c, a, n = init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_9.csv", 1)
+    print(c)
