@@ -11,8 +11,7 @@ def compute_cost(W, X, Y, reg_strength):
     cost = 1 / 2 * np.dot(W, W) + hinge_loss
     return cost
 
-# I haven't tested it but this same function should work for
-# vanilla and mini-batch gradient descent as well
+
 def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
     # if only one example is passed (eg. in case of SGD)
     if type(Y_batch) == np.float64:
@@ -32,7 +31,7 @@ def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
     return dw
 
 def sgd(features, outputs, reg_strength, learning_rate):
-    max_epochs = 1000 #change this value
+    max_epochs = 20000 #change this value
     #cost_list = []
 
     weights = np.zeros(features.shape[1])
@@ -63,6 +62,5 @@ def sgd(features, outputs, reg_strength, learning_rate):
 
             prev_cost = cost
             nth += 1
-
 
     return weights, cost
