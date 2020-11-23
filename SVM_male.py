@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, recall_score
+from sklearn.metrics import accuracy_score, recall_score, roc_auc_score
 import pandas as pd
 import numpy as np
 from SVM_cost import sgd
@@ -25,12 +25,11 @@ def init_m(file, j):
 
     y_test_predicted = np.array([])
     count_CVD_correct = 0
-    count_NO_correct = 0
+
+
     for i in range(X_test.shape[0]):
         yp = np.sign(np.dot(W, X_test.to_numpy()[i]))  # model
         y_test_predicted = np.append(y_test_predicted, yp)
-
-
 
     for v in enumerate(y_test):
         if v[1] == 1.0 and y_test_predicted[v[0]] == 1.0:
@@ -38,12 +37,12 @@ def init_m(file, j):
 
 
     node_cost_reduction = cost_reduction * count_CVD_correct
-    print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
-    print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
+    #print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
+    #print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
     #print("precision on test dataset: {}".format(precision_score(y_test.to_numpy(), y_test_predicted)))
     #print("cost reduction of node %s: " %j, "{}" .format(node_cost_reduction), " euros per QALY\n")
 
-    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
+    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), roc_auc_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
 reg_strength = 170 # regularization strength 170
@@ -51,5 +50,5 @@ learning_rate = 0.0000001 #0.0000001
 cost_reduction = 5100
 
 if __name__ == '__main__':
-    w, c, a, n = init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_9.csv", 1)
-    print(c)
+    w, c, a,auc , n = init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_9.csv", 1)
+    print(auc)

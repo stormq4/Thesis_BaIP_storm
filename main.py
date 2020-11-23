@@ -21,10 +21,11 @@ def reader_writer2(file, begin, end, node_file): #, begin, end): #reads file and
     df[begin:end].to_csv(node_file)
     return df[begin:end]
 
-def results_df(i, Acc, CR):
+def results_df(i, Acc, AUCM, CR):
     name = {
         'Node': i,
         'Accuracy': Acc,
+        'AUC-ROC': AUCM,
         'Cost Reduction': CR
     }
     return name
@@ -59,11 +60,11 @@ for i in g.nodes:
     attrs = {i: {"male": male, "female": female}}
     nx.set_node_attributes(g, attrs)
 
-    X_im, cost_m, Accm, CRM = init_m(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv' %i, i)
-    X_if, cost_f, Accf, CRF = init_f(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv' %i, i)
+    X_im, cost_m, Accm, AUCM, CRM = init_m(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv' %i, i)
+    X_if, cost_f, Accf, AUCF, CRF = init_f(r'/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv' %i, i)
 
-    res_data_m.append(results_df(i, Accm, CRM))
-    res_data_f.append(results_df(i, Accf, CRF))
+    res_data_m.append(results_df(i, Accm, AUCM, CRM))
+    res_data_f.append(results_df(i, Accf, AUCF, CRF))
 
     X_i_male.append(X_i(X_im, i, cost_m))
     X_i_female.append(X_i(X_if, i, cost_f))

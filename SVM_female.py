@@ -1,4 +1,4 @@
-from sklearn.metrics import accuracy_score, recall_score
+from sklearn.metrics import accuracy_score, recall_score, roc_auc_score
 import pandas as pd
 import numpy as np
 from SVM_cost import sgd
@@ -37,12 +37,12 @@ def init_f(file, j):
 
 
     node_cost_reduction = cost_reduction * count_CVD_correct
-    print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
-    print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
+    #print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
+    #print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
     #print("precision on test dataset: {}".format(precision_score(y_test.to_numpy(), y_test_predicted)))
     #print("cost reduction of node %s: " %j, "{}" .format(node_cost_reduction), " euros per QALY\n")
 
-    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
+    return W, cost, accuracy_score(y_test.to_numpy(), y_test_predicted), roc_auc_score(y_test.to_numpy(), y_test_predicted), node_cost_reduction
 
 
 reg_strength = 150 # regularization strength 100
