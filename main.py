@@ -21,11 +21,11 @@ def reader_writer2(file, begin, end, node_file): #, begin, end): #reads file and
     df[begin:end].to_csv(node_file)
     return df[begin:end]
 
-def results_df(i, Acc, AUCM, CR):
+def results_df(i, Acc, AUC, CR):
     name = {
         'Node': i,
         'Accuracy': Acc,
-        'AUC-ROC': AUCM,
+        'AUC-ROC': AUC,
         'Cost Reduction': CR
     }
     return name
