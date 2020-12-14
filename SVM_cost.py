@@ -1,7 +1,9 @@
 import numpy as np
+from sklearn.utils import shuffle
 
+#computing local cost
 def compute_cost(W, X, Y, reg_strength):
-    # calculate hinge loss
+    # calculate relaxation
     N = X.shape[0]
     distances = 1 - Y * (np.dot(X, W))
     distances[distances < 0] = 0  # equivalent to max(0, distance)
@@ -11,9 +13,9 @@ def compute_cost(W, X, Y, reg_strength):
     cost = 1 / 2 * np.dot(W, W) + hinge_loss
     return cost
 
-
+#calculating cost gradient to compute cost
 def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
-    # if only one example is passed (eg. in case of SGD)
+    #filtering values for cost gradient
     if type(Y_batch) == np.float64:
         Y_batch = np.array([Y_batch])
         X_batch = np.array([X_batch])
@@ -30,19 +32,22 @@ def calculate_cost_gradient(W, X_batch, Y_batch, reg_strength):
 
     return dw
 
+#computes cost
 def sgd(features, outputs, reg_strength, learning_rate):
-    max_epochs = 10000 #change this value
-    #cost_list = []
+    #epochs to solve the local SVM
+    max_epochs = 2000 #change this value for testing
 
     weights = np.zeros(features.shape[1])
     nth = 0
     prev_cost = float("inf")
-    cost_threshold = 0.0005  # in percent
+    cost_threshold = 0.00005# in percent
 
     # stochastic gradient descent
     for epoch in range(1, max_epochs):
-        # shuffle to prevent repeating update cycles
-        X, Y = features, outputs
+
+        #X, Y = features, outputs
+        X, Y = shuffle(features, outputs)
+
         for ind, x in enumerate(X):
             ascent = calculate_cost_gradient(weights, x, Y[ind], reg_strength)
 
@@ -51,14 +56,13 @@ def sgd(features, outputs, reg_strength, learning_rate):
 
         if epoch == 2 ** nth or epoch == max_epochs - 1:
             cost = compute_cost(weights, features, outputs, reg_strength)
-            #cost_list[nth] = cost
 
-            #print("Epoch is:{} and Cost is: {}".format(epoch, cost))
+            #testing
+            print("Epoch is:{} and Cost is: {}".format(epoch, cost))
             # stoppage criterion
+
             if abs(prev_cost - cost) < cost_threshold * prev_cost:
                 return weights, cost
-            #if nth != 0 and cost_list[nth] > cost_list[nth-1]:
-                #return weights
 
             prev_cost = cost
             nth += 1
