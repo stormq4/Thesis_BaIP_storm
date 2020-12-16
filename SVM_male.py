@@ -6,7 +6,8 @@ from SVM_cost import sgd
 
 def init_m(file, j):
     #reading csv and replacing 0 with -1
-    data = pd.read_csv(file)
+    data = pd.read_csv(file, delimiter=";", sep="\n", dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,
+                                                             'di_bp': np.float64, 'chol': np.float64})
     data['CVD'].replace({0.0: -1.0}, inplace=True)
 
     #defining target value Y and X values for training and testing
@@ -29,6 +30,7 @@ def init_m(file, j):
     W, cost = sgd(X_train.to_numpy(), y_train.to_numpy(), reg_strength, learning_rate)
     y_test_predicted = np.array([])
     count_CVD_correct = 0
+
 
     #counting values for classification
     for i in range(X_test.shape[0]):
