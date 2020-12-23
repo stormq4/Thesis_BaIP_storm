@@ -7,6 +7,8 @@ def create_network(n,p):
     return g
 
 #retrieving constant values for network
+#zitten allemaal in mapje Network
+#
 if __name__ == '__main__':
     n = 20  # nodes of 20 hospitals
     p = 0.3 # probalilty of conectivity

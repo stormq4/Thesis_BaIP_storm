@@ -3,7 +3,10 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+#deze file solved voor elke 'node' of 'agent' in het netwerk met de cvxpy solver
+#Ik denk dat mijn cost functie sowieso niet klopt met variables
 
+#elke node krijgt een class
 class agent_03:
     def __init__(self, node, in_nb, out_nb, W, b, eps):#, X_i_male, X_i_female): #, X_i_star, direct, cons):
         self.node = node
@@ -15,12 +18,14 @@ class agent_03:
 
 agents = 20
 
+#dit is om data te lezen van een csv file
 edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
 data = pd.read_csv(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/male4.csv", delimiter=";", sep="\n"
                    ,dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,'di_bp': np.float64, 'chol': np.float64})
 df = pd.DataFrame(data, columns=['CVD', 'BMI', 'sys_bp', 'di_bp', 'chol'])
 
+#Maakt mijn data een binary variable
 df['CVD'].replace({0.0: -1.0}, inplace=True)
 
 Y = df.loc[:, 'CVD']  # all rows of 'CVD'
@@ -33,6 +38,7 @@ relaxation = 10
 
 var = 4
 
+#defining van variables
 W = cp.Variable((var, 1))
 b = cp.Variable()
 eps = cp.Variable(nonneg=True)
@@ -40,8 +46,11 @@ eps = cp.Variable(nonneg=True)
 loss = cp.sum(eps)
 
 reg = cp.square(cp.norm(W))
+
+#cost function, kloopt waarschijnlijk niet
 opt = cp.Minimize(0.5 * reg + relaxation * loss)
 
+#loop om mijn agents te vullen met neighbours en
 for i in range(agents):
     in_neighb = []
     out_neighb = []
@@ -65,6 +74,7 @@ for i in range(agents):
     y_train = np.array(y_train)
     y_train.shape = (y_train.shape[0], 1)
 
+    #elke keer worden contraints toegevoegd aan
     constraints = [cp.multiply(y_train, X_train @ W + b) >= 1 - eps]
     prob = cp.Problem(opt, constraints)
 
@@ -78,4 +88,5 @@ for i in range(agents):
     print("eps is {} \n".format(eps.value))
     #print(prob.status)
 
-
+#eigenlijk al mijn waardes die uit mijjn cost functieon rollen zijn ruk dus klopt waarschijnlijk helemaal niets van haha
+#succes ;)
