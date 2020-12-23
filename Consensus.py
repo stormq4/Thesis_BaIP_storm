@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from Global_Cost_Function import global_cost
 import matplotlib.pyplot as plt
 
 consensus = False
@@ -44,12 +42,12 @@ cost_female = pd.read_csv(r'results/X_Node_female.csv', delimiter=",", sep="\n",
 edges_01 = pd.read_csv(r'Network/network_01_new.csv', delimiter=" ", sep="\n", header=None)
 edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
+
+
 data_frame = []
 for i in range(nodes):
     globals()['n_01_%s' % i] = network_01(i, [], cost_male.iloc[i, 0], cost_female.iloc[i, 0], [])#, X_i_male[i], X_i_female.iloc[i])
     globals()['n_03_%s' % i] = network_03(i, [], cost_male.iloc[i, 0], cost_female.iloc[i, 0], []) #, X_i_male[i], X_i_female.iloc[i])
-
-
 
     fill_df = []
     fill_df.append('N_%s' % i)

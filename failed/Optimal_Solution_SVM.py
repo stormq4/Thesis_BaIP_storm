@@ -2,8 +2,8 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 import numpy as np
-from SVM_cost import sgd
-from Global_Cost_Function import global_cost
+from failed.SVM_cost import sgd
+from failed.Global_Cost_Function import global_cost
 import time
 
 def init(file):
@@ -79,8 +79,8 @@ X_ir = []
 if __name__ == '__main__':
     start_time = time.time()
 
-    X_im, cost_m, Accm, AUCM, CRM = init(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/Tr_Te/male.csv")
-    X_if, cost_f, Accf, AUCF, CRF = init(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/Tr_Te/female.csv")
+    X_im, cost_m, Accm, AUCM, CRM = init(r"/Data/Tr_Te/male.csv")
+    X_if, cost_f, Accf, AUCF, CRF = init(r"/Data/Tr_Te/female.csv")
 
     gcm = global_cost(X_im)
     gcf = global_cost(X_if)

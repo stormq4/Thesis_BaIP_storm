@@ -3,14 +3,14 @@ import numpy as np
 
 
 def read_male(j, k):
-    data = pd.read_csv(r"Data/male4.csv", delimiter=";", sep="\n", dtype={'CVD': np.float64, 'BMI': np.float64,
+    data = pd.read_csv(r"../Data/male4.csv", delimiter=";", sep="\n", dtype={'CVD': np.float64, 'BMI': np.float64,
                                                                           'sys_bp': np.float64,'di_bp': np.float64, 'chol': np.float64})
     df = pd.DataFrame(data, columns=['CVD', 'BMI', 'sys_bp', 'di_bp', 'chol'])
 
     return df[j: k - 200], df[k - 200: k]
 
 def read_female(j, k):
-    data = pd.read_csv(r"Data/female4.csv", delimiter=",", sep="\n", dtype={'CVD': np.float64, 'BMI': np.float64,
+    data = pd.read_csv(r"../Data/female4.csv", delimiter=",", sep="\n", dtype={'CVD': np.float64, 'BMI': np.float64,
                                                                           'sys_bp': np.float64,'di_bp': np.float64, 'chol': np.float64})
     df = pd.DataFrame(data, columns=['CVD', 'BMI', 'sys_bp', 'di_bp', 'chol'])
 

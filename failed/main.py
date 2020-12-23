@@ -1,10 +1,10 @@
 import networkx as nx
 from network_SVM import create_network
-from SVM_female import init_f
+from failed.SVM_female import init_f
 import pandas as pd
 import numpy as np
-from SVM_male import init_m
-from Global_Cost_Function import global_cost
+from failed.SVM_male import init_m
+from failed.Global_Cost_Function import global_cost
 import time
 
 
@@ -62,10 +62,10 @@ for i in g.nodes:
     start_time = time.time()
     j = i*400
     k = (i+1)*400
-    male = reader_writer1(r"Data/male4.csv", j, k,
-                         r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv" %i)
-    female = reader_writer2(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/female4.csv", j, k,
-                           r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv" %i)
+    male = reader_writer1(r"../Data/male4.csv", j, k,
+                         r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_%s.csv" % i)
+    female = reader_writer2(r"/Data/female4.csv", j, k,
+                           r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_female/fnode_%s.csv" % i)
 
     attrs = {i: {"male": male, "female": female}}
     nx.set_node_attributes(g, attrs)

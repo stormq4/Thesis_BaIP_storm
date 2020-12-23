@@ -2,7 +2,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 import numpy as np
-from SVM_cost import sgd
+from failed.SVM_cost import sgd
 
 def init_m(file, j):
     #reading csv and replacing 0 with -1
@@ -53,5 +53,5 @@ cost_reduction = 5100
 
 #test
 if __name__ == '__main__':
-    w, c, a,auc , n = init_m(r"/Users/stormdequay/PycharmProjects/pythonProject/Data/node_male/mnode_16.csv", 1)
+    w, c, a,auc , n = init_m(r"/Data/node_male/mnode_16.csv", 1)
     print(auc)

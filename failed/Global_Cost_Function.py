@@ -15,7 +15,7 @@ def global_cost(W, X, Y, reg_strength): #REMOVE XYand reg_strength
 if __name__ == "__main__":
     #results_male = pd.read_csv(r'/Users/stormdequay/PycharmProjects/pythonProject/results/X_Node_male_good.csv', delimiter=",", sep="\n", dtype= {'X_i*' : np.float64})
 
-    results_male = pd.read_csv(r'results/X_Node_male.csv', usecols=['X_i*'], delimiter=",", sep="\n" )
+    results_male = pd.read_csv(r'../results/X_Node_male.csv', usecols=['X_i*'], delimiter=",", sep="\n")
     xi_star = pd.read_csv(results_male, delimiter=' ', sep='\n', dtype=np.float64)
     df = pd.DataFrame(xi_star)
 
