@@ -2,7 +2,6 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-import disropt
 
 #deze file solved voor elke 'node' of 'agent' in het netwerk met de cvxpy solver
 #Ik denk dat mijn cost functie sowieso niet klopt met variables
@@ -43,7 +42,7 @@ var = 4
 #defining van variables
 W = cp.Variable((var, 1))
 b = cp.Variable()
-eps = cp.Variable((points_per_agent, 1), nonneg=True)
+eps = cp.Variable((4000, 1), nonneg=True)
 
 loss = cp.sum(eps)
 
@@ -53,17 +52,15 @@ reg = cp.square(cp.norm(W))
 opt = cp.Minimize(0.5 * reg + relaxation * loss)
 
 #loop om mijn agents te vullen met neighbours en
+X_train_total = np.zeros((1,4))
+X_test_total = np.zeros((1,4))
+y_test_total = np.zeros((1,1))
+y_train_total = np.zeros((1,1))
+
+
 for i in range(agents):
-    in_neighb = []
-    out_neighb = []
 
-    for j in range(edges_03.shape[0]):
-        if edges_03.iloc[j, 1] == i:
-            in_neighb.append(edges_03.iloc[j, 0])
 
-    for j in range(edges_03.shape[0]):
-        if edges_03.iloc[j, 0] == i:
-            out_neighb.append(edges_03.iloc[j, 1])
 
     X_train = X[400 * i: 400 * i + 200]
     X_test = X[400 * i + 200: 400 * (i + 1)]
@@ -75,20 +72,30 @@ for i in range(agents):
     y_train = y_train.values
     y_train = np.array(y_train)
     y_train.shape = (y_train.shape[0], 1)
+    y_test = np.array(y_test)
+    y_test.shape = (y_test.shape[0], 1)
 
-    #elke keer worden contraints toegevoegd aan
-    constraints = [cp.multiply(y_train, X_train @ W + b) >= 1 - eps]
-    prob = cp.Problem(opt, constraints)
+    X_train_total = np.concatenate((X_train_total, X_train), axis=0)
+    X_test_total = np.concatenate((X_test_total, X_test), axis=0)
+    y_test_total = np.concatenate((y_test_total, y_test), axis=0)
+    y_train_total = np.concatenate((y_train_total, y_train), axis=0)
 
-    prob.solve()
 
-    globals()['n_03_%s' % i] = agent_03(i, in_neighb, out_neighb, W.value, b.value, eps.value)
 
-    print("optimal value with SCS for node {} is :{}".format(i, prob.value))
-    print("W* is \n{} ".format(W.value))
-    print("b* is {}".format(b.value))
-    #print("eps is {} \n".format(eps.value))
-    #print(prob.status)
+X_train_total = X_train_total[1:,:]
+X_test_total = X_test_total[1:,:]
+y_test_total = y_test_total[1:,:]
+y_train_total = y_train_total[1:,:]
 
+constraints = [cp.multiply(y_train_total, X_train_total @ W + b) >= 1 - eps]
+prob = cp.Problem(opt, constraints)
+
+prob.solve()
+
+print("optimal value with SCS for node {} is :{}".format(0, prob.value))
+print("W* is \n{} ".format(W.value))
+print("b* is {}".format(b.value))
+
+print()
 #eigenlijk al mijn waardes die uit mijjn cost functieon rollen zijn ruk dus klopt waarschijnlijk helemaal niets van haha
 #succes ;)
