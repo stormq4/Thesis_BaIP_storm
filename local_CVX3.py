@@ -140,40 +140,45 @@ plt.style.use('seaborn')
 for i in range(agents):
     agent = agent_list[i]
     print(agent.obj_func.value)
-    # print(agent.W.value)
+    print(agent.W.value)
     w = agent.W.value
     b = agent.b.value
     print(i)
     print(w)
     print(b)
 
-    cost_reduction, ROC_Curve, ROC_Score = cf(agent.y_train, agent.y_test, w, b)
-    fpr, tpr = ROC_Curve
-    print(ROC_Score)
-    plt.plot(fpr, tpr, color=colours[i])
-    print(cost_reduction)
+    #cost_reduction, ROC_Curve, ROC_Score = cf(agent.y_train, agent.y_test, w, b)
+    #fpr, tpr = ROC_Curve
+    #print(ROC_Score)
+    #plt.plot(fpr, tpr, color=colours[i])
+    #print(cost_reduction)
 
     #store solutions in files
     #f(x), x in een file en auc_roc score in de andere
 plt.title('AUC_ROC Curves')
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Negative Rate')
-plt.show()
+#plt.show()
 
 #print()
 
-iterations = 2
+iterations = 1
 
 # Dit had de time iteration moeten worden, maar omdat de basis niet berekend kon worden, is dat dus niet af
 for t in range(iterations):
     #store previously computed values of Bi
+
     store_base = []
     for agent in agent_list:
         agent.Bt = agent.Bi
         store_base.append(agent.Bt)
+
     #computing new base
     for agent in agent_list:
-        Bt = agent.Bt
+        # initialising bt and retrieving from neighbours
+        # with constraints from Bi, Xi and Bj
+        # and compute new Bi
+        Bt = []
         Xi = agent.Xi
 
         Bj = []
@@ -181,12 +186,15 @@ for t in range(iterations):
         for nb in agent.in_nb:
             B = store_base[nb]
             Bj.append(B)
-        Bt.append(Bj)
-        Bt.append(Xi)
-        agent.Bi = Bt
 
-        if t > iterations - 5:
-            print(agent.node)
-            print(agent.W.value)
-            print(agent.b.value)
-            print(t)
+        Bt.append(Xi)
+        Bt.append(agent.Bt)
+        Bt.append(Bj)
+        Bt.append(Bj)
+        #agent.Bi = Bt
+
+        #if t > iterations - 5:
+            #print(agent.node)
+            #print(agent.W.value)
+            #print(agent.b.value)
+            #print(t)
