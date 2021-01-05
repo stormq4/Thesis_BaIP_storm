@@ -2,7 +2,7 @@ import cvxpy as cp
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
-import disropt
+
 
 #deze file solved voor elke 'node' of 'agent' in het netwerk met de cvxpy solver
 #Ik denk dat mijn cost functie sowieso niet klopt met variables
@@ -89,6 +89,11 @@ for i in range(agents):
     print("b* is {}".format(b.value))
     #print("eps is {} \n".format(eps.value))
     #print(prob.status)
+
+    w = W.value
+    b = b.value
+
+
 
 #eigenlijk al mijn waardes die uit mijjn cost functieon rollen zijn ruk dus klopt waarschijnlijk helemaal niets van haha
 #succes ;)

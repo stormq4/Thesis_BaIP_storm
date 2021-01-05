@@ -72,3 +72,5 @@ prob.solve(solver=cp.SCS, verbose=True, use_indirect=True)
 print("optimal value with SCS:{}".format(prob.value))
 print("W* is \n{} ".format(W.value))
 print("b* is {}".format(b.value))
+
+

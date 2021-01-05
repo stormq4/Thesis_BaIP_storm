@@ -80,8 +80,6 @@ for i in range(agents):
     y_test_total = np.concatenate((y_test_total, y_test), axis=0)
     y_train_total = np.concatenate((y_train_total, y_train), axis=0)
 
-
-
 X_train_total = X_train_total[1:,:]
 X_test_total = X_test_total[1:,:]
 y_test_total = y_test_total[1:,:]
@@ -92,10 +90,32 @@ prob = cp.Problem(opt, constraints)
 
 prob.solve()
 
+
+
+
 print("optimal value with SCS for node {} is :{}".format(0, prob.value))
 print("W* is \n{} ".format(W.value))
 print("b* is {}".format(b.value))
 
-print()
-#eigenlijk al mijn waardes die uit mijjn cost functieon rollen zijn ruk dus klopt waarschijnlijk helemaal niets van haha
-#succes ;)
+#print()
+
+
+
+w = W.value
+b = b.value
+
+#print(X_test_total)
+
+TP = 0
+TN = 0
+FP = 0
+FN = 0
+
+for z in X_test_total:
+    z = z[None, :]
+    #print()
+    classifier = z @ w + b
+    #print(classifier)
+
+
+
