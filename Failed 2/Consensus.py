@@ -28,19 +28,19 @@ class network_03:
         #self.X_i_female = X_i_female
         #self.X_i_star = X_i_star        self.direct = direct        self.cons = cons
 
-X_i_male = pd.read_csv(r'results/X_Node_male.csv', delimiter=",", sep="\n", usecols=['X_i*'])
-X_i_female = pd.read_csv(r'results/X_Node_female.csv', delimiter=",", sep="\n", usecols=['X_i*'])
+X_i_male = pd.read_csv(r'../results/X_Node_male.csv', delimiter=",", sep="\n", usecols=['X_i*'])
+X_i_female = pd.read_csv(r'../results/X_Node_female.csv', delimiter=",", sep="\n", usecols=['X_i*'])
 
-cost_male = pd.read_csv(r'results/X_Node_male.csv', delimiter=",", sep="\n", usecols=['Cost'])
-cost_female = pd.read_csv(r'results/X_Node_female.csv', delimiter=",", sep="\n", usecols=['Cost'])
+cost_male = pd.read_csv(r'../results/X_Node_male.csv', delimiter=",", sep="\n", usecols=['Cost'])
+cost_female = pd.read_csv(r'../results/X_Node_female.csv', delimiter=",", sep="\n", usecols=['Cost'])
 
 #print(cost_male.iloc[0, 0])
 
 #X_i_male = np.array(X_i_male, dtype= np.float64)
 #X_i_female = np.array(X_i_female)
 
-edges_01 = pd.read_csv(r'Network/network_01_new.csv', delimiter=" ", sep="\n", header=None)
-edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
+edges_01 = pd.read_csv(r'../Network/network_01_new.csv', delimiter=" ", sep="\n", header=None)
+edges_03 = pd.read_csv(r'../Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
 
 

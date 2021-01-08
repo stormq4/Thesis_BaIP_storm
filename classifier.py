@@ -30,10 +30,13 @@ def classifier(X_test_total, Y, w, b):
             TN += 1
             pred.append(-1)
         i += 1
+    print(Y)
+    print(pred)
     fpr, tpr, thres = roc_curve(Y, pred, pos_label=1)
     AUC_ROC = roc_auc_score(Y, pred)
     CR_QALY = Cost_Reduction * TP
 
     auc = fpr, tpr
+
 
     return CR_QALY, auc, AUC_ROC

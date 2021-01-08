@@ -20,10 +20,10 @@ class agent_03:
 agents = 20
 
 #dit is om data te lezen van een csv file
-edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
+edges_03 = pd.read_csv(r'../Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
-data = pd.read_csv(r"Data/male4.csv", delimiter=";", sep="\n"
-                   ,dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,'di_bp': np.float64, 'chol': np.float64})
+data = pd.read_csv(r"../Data/male4.csv", delimiter=";", sep="\n"
+                   , dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,'di_bp': np.float64, 'chol': np.float64})
 df = pd.DataFrame(data, columns=['CVD', 'BMI', 'sys_bp', 'di_bp', 'chol'])
 
 #Maakt mijn data een binary variable

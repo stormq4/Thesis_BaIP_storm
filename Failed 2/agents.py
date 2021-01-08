@@ -4,7 +4,7 @@ from disropt.algorithms import Consensus
 import pandas as pd
 import numpy as np
 
-edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
+edges_03 = pd.read_csv(r'../Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 nodes = 20
 
 

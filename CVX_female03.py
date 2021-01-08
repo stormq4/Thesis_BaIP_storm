@@ -3,13 +3,11 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from itertools import combinations
-from classifier import classifier as cf
 import matplotlib.pyplot as plt
+from classifier import classifier as cf
 
-#deze file solved voor elke 'node' of 'agent' in het netwerk met de cvxpy solver
-#Ik denk dat mijn cost functie sowieso niet klopt met variables
 
-#elke node krijgt een class
+
 class Agent:
     def __init__(self, node, x_train, x_test, y_train, y_test):
         self.node = node
@@ -22,7 +20,6 @@ class Agent:
 
         # Bt is Basis op dit moment
         self.Bt = None
-
 
         # d is het aantal variabelen, gelijk aan lengte van de tweede as van X
         self.d = len(x_train[0, :])
@@ -37,7 +34,8 @@ class Agent:
                    range(len(x_train))]
 
         # Bi is initial Basis
-        self.Bi = [cp.multiply(self.y_train[i], self.x_train[i] @ self.W + self.b) >= 1 - self.xi[i] for i in range(len(x_train))]
+        self.Bi = [cp.multiply(self.y_train[i], self.x_train[i] @ self.W + self.b) >= 1 - self.xi[i] for i in
+                   range(len(x_train))]
 
         loss = cp.sum(self.xi)
         reg = cp.square(cp.norm(self.W))
@@ -49,10 +47,27 @@ class Agent:
         self.constraints = self.Bi
 
         # Berekening van de basis op basis van constraints
-        self.compute_basis()
+        self.compute_basis(self.constraints)
 
+    def compute_basis(self, constraints):
 
-    def compute_basis(self):
+        '''
+        constraints_unique = self.unique_constr(constraints)
+
+        # find active constraints
+        active_constr = []
+        for con in constraints_unique:
+            # try:
+            val = con.function.eval(self.x)
+            # except:
+            if abs(val) < 1e-5:
+                active_constr.append(con)
+        basis = active_constr
+        '''
+        # remove redundant constraints
+
+        # enumerating the possible combinations with d+1 constraints
+
         for possible_basis in combinations(self.constraints, self.d + 1):
             # convert candidate basis to list
             possible_basis = list(possible_basis)
@@ -71,18 +86,72 @@ class Agent:
 
         self.constraints = basis
 
+    '''
+        def unique_constr(self, constraints):
+        """Remove redundant constraints from given constraint list
+        """
+
+        # initialize shrunk list of constraints
+        con_shrink = []
+
+        # cycle over given constraints
+        for con in constraints:
+            if not con_shrink:
+                con_shrink.append(con)
+            else:
+                check_equal = np.zeros((len(con_shrink), 1))
+                # TODO: use numpy array_equal
+
+                # cycle over already added constraints
+                for idx, con_y in enumerate(con_shrink):
+                    if self.compare_constr(con_y, con):
+                        check_equal[idx] = 1
+                n_zero = np.count_nonzero(check_equal)
+
+                # add constraint if different from all the others
+                if n_zero == 0:
+                    con_shrink.append(con)
+        return con_shrink
+
+    '''
+    '''def compare_constr(self, a, b):
+        """Compare two constraints to check whether they are equal
+        """
+
+        # test for affine constraints
+        if (a.is_affine and b.is_affine):
+            A_a, b_a = a.get_parameters()
+            A_b, b_b = b.get_parameters()
+            if np.array_equal(A_a, A_b) and np.array_equal(b_a, b_b):
+                return True
+            else:
+                return False
+
+        # test for quadratic constraints
+        elif (a.is_quadratic and b.is_quadratic):
+            P_a, q_a, r_a = a.get_parameters()
+            P_b, q_b, r_b = b.get_parameters()
+            if np.array_equal(P_a, P_b) and np.array_equal(q_a, q_b) and np.array_equal(r_a, r_b):
+                return True
+            else:
+                return False
+        else:
+            return False
+    '''
+
+
 agents = 20
 n_agents = 20
 
-#dit is om data te lezen van een csv file
+# dit is om data te lezen van een csv file
 edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
-data = pd.read_csv(r"Data/male4.csv", delimiter=";", sep="\n"
-                   ,dtype={'CVD': np.float64,'BMI': np.float64,'sys_bp': np.float64,'di_bp': np.float64,
-                           'chol': np.float64})
+data = pd.read_csv(r"Data/female4.csv", delimiter=",", sep="\n"
+                   , dtype={'CVD': np.float64, 'BMI': np.float64, 'sys_bp': np.float64, 'di_bp': np.float64,
+                            'chol': np.float64})
 df = pd.DataFrame(data, columns=['CVD', 'BMI', 'sys_bp', 'di_bp', 'chol'])
 
-#Maakt mijn data een binary variable
+# Maakt mijn data een binary variable
 df['CVD'].replace({0.0: -1.0}, inplace=True)
 
 Y = df.loc[:, 'CVD']  # all rows of 'CVD'
@@ -96,16 +165,16 @@ points_per_agent = 2
 
 var = 4
 
-#X en Y worden naar numpy arrays omgezet
+# X en Y worden naar numpy arrays omgezet
 X = X.values
 Y = Y.values
-#Het aantal datapunten is gelijk aan de lengte van de eerste as van X (de tweede as zijn namelijk bmi, chol, etc)
-#n_datapoints = len(X[:,0])
+# Het aantal datapunten is gelijk aan de lengte van de eerste as van X (de tweede as zijn namelijk bmi, chol, etc)
+# n_datapoints = len(X[:,0])
 n_datapoints = 320
 
 print()
 
-#hier worden de agents geinitialiseerd
+# hier worden de agents geinitialiseerd
 agent_list = []
 
 colours = ['r', 'g', 'b', 'y', 'c', 'm', 'k', 'orange', 'brown', 'pink', 'lime', 'navy', 'cyan',
@@ -117,8 +186,8 @@ for i in range(n_agents):
     pp_agents = int(n_datapoints / n_agents / 2)
 
     # X en Y worden gesliced zodat je per agent de goede data hebt
-    agent_x_train = X[2*i*pp_agents:(2*i+1)*pp_agents,:]
-    agent_x_test = X[(2*i+1)*pp_agents:(2*i+2)*pp_agents,:]
+    agent_x_train = X[2 * i * pp_agents:(2 * i + 1) * pp_agents, :]
+    agent_x_test = X[(2 * i + 1) * pp_agents:(2 * i + 2) * pp_agents, :]
     # Laatste deel voegt een lege axis toe, zodat dimension van (4,) naar (4,1) gaat
     # Hierdoor kan cvxpy ze samen met X gebruiken
     agent_y_train = Y[2 * i * pp_agents:(2 * i + 1) * pp_agents][:, None]
@@ -135,66 +204,34 @@ for i in range(n_agents):
 
     agent_list.append(agent)
 
+agents = 20
+
+#hier worden de agents geinitialiseerd
+
+colours = ['r', 'g', 'b', 'y', 'c', 'm', 'k', 'orange', 'brown', 'pink', 'lime', 'navy', 'cyan',
+           'salmon', 'purple', 'grey', 'olive', 'chocolate', 'cadetblue', 'cornsilk']
+
 plt.style.use('seaborn')
 #local solutions for every node
 for i in range(agents):
     agent = agent_list[i]
     print(agent.obj_func.value)
-    print(agent.W.value)
+
     w = agent.W.value
     b = agent.b.value
-    print(i)
-    print(w)
-    print(b)
 
-    #cost_reduction, ROC_Curve, ROC_Score = cf(agent.y_train, agent.y_test, w, b)
-    #fpr, tpr = ROC_Curve
-    #print(ROC_Score)
-    #plt.plot(fpr, tpr, color=colours[i])
-    #print(cost_reduction)
+    print(i)
+
+
+    cost_reduction, ROC_Curve, ROC_Score = cf(agent.x_test, agent.y_test, agent.W.value, agent.b.value)
+    fpr, tpr = ROC_Curve
+    print(ROC_Score)
+    plt.plot(fpr, tpr, color=colours[i])
+    print(cost_reduction)
 
     #store solutions in files
     #f(x), x in een file en auc_roc score in de andere
 plt.title('AUC_ROC Curves')
 plt.ylabel('True Positive Rate')
 plt.xlabel('False Negative Rate')
-#plt.show()
-
-#print()
-
-iterations = 1
-
-# Dit had de time iteration moeten worden, maar omdat de basis niet berekend kon worden, is dat dus niet af
-for t in range(iterations):
-    #store previously computed values of Bi
-
-    store_base = []
-    for agent in agent_list:
-        agent.Bt = agent.Bi
-        store_base.append(agent.Bt)
-
-    #computing new base
-    for agent in agent_list:
-        # initialising bt and retrieving from neighbours
-        # with constraints from Bi, Xi and Bj
-        # and compute new Bi
-        Bt = []
-        Xi = agent.Xi
-
-        Bj = []
-        B = None
-        for nb in agent.in_nb:
-            B = store_base[nb]
-            Bj.append(B)
-
-        Bt.append(Xi)
-        Bt.append(agent.Bt)
-        Bt.append(Bj)
-        Bt.append(Bj)
-        #agent.Bi = Bt
-
-        #if t > iterations - 5:
-            #print(agent.node)
-            #print(agent.W.value)
-            #print(agent.b.value)
-            #print(t)
+plt.show()

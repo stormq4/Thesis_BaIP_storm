@@ -57,7 +57,7 @@ nodes = X_train.shape[0]
 
 
 
-edges_03 = pd.read_csv(r'Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
+edges_03 = pd.read_csv(r'../Network/network_03_new.csv', delimiter=" ", sep="\n", header=None)
 
 
 
